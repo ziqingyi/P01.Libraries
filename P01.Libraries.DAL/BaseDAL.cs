@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using P01.Libraries.IDAL;
@@ -14,7 +15,8 @@ namespace P01.Libraries.DAL
     /// </summary>
     public class BaseDAL : IBaseDAL
     {
-        private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
+        //private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
+        private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
         public bool Add<T>(T t) where T : BaseModel
         {
             throw new NotImplementedException();
@@ -33,29 +35,39 @@ namespace P01.Libraries.DAL
         public T FindT<T>(int id) where T : BaseModel
         {
             Type type = typeof(T);
-            string sql = $"SELECT {string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"))} FROM [{type.Name}] WHERE ID={id}";
+            String Sql = $"SELECT {string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"))}" +
+                         $"FROM [{type.Name}]" +
+                         $"WHERE ID= {id}";
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
             {
-                SqlCommand command = new SqlCommand(sql, conn);
                 conn.Open();
-                var reader = command.ExecuteReader();
-                if (reader.Read())
+                using (SqlCommand command = new SqlCommand(Sql, conn))
                 {
-                    object oObject = Activator.CreateInstance(type);
-                    foreach (var prop in type.GetProperties())
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
                     {
-                        //prop.SetValue(oObject, reader[prop.Name]]);
-                        //Eleven 可空类型，如果数据库存储的是null，直接SetValue会报错的
-                        prop.SetValue(oObject, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
+                        object obj = Activator.CreateInstance(type);
+
+                        foreach (var prop in type.GetProperties())
+                        {
+                            // notice the null from database 
+                            prop.SetValue(obj, reader[prop.Name] is DBNull? null: reader[prop.Name]);
+                        }
+                        reader.Close();
+                        return (T) obj;
                     }
-                    //return this.Trans<T>(type, reader);
-                    return (T) oObject;
+                    else
+                    {
+                        return null; //not exist in database 
+                    }
+
+                    
                 }
-                else
-                {
-                    return null;//Eleven  数据库没有，应该返回null  而不是一个默认对象
-                }
+
+
             }
+
+
         }
 
         public bool Update<T>(T t) where T : BaseModel

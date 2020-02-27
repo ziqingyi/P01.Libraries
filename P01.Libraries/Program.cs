@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using P01.Libraries;
 using P01.Libraries.IDAL;
 using P01.Libraries.DAL;
+using P01.Libraries.Model;
 namespace P01.Libraries
 {
     class Program
@@ -10,11 +13,12 @@ namespace P01.Libraries
         {
             Console.WriteLine("update database with different layers");
 
-            String name = "Eleven";
-            String sql = $"SELECT * FROM [TESTUSER] WHER ENAME = '{name}' and PASSWORD='12345'";
+            //String tt = ConfigurationManager.ConnectionStrings["myCustomConfig"].ConnectionString;//"server=netcrmau;uid=dev;pwd='';database=Backup";
+                
+
             BaseDAL b = new BaseDAL();
-            
-            b.FindT<>()
+
+            atesUser u1 = b.FindT<atesUser>(1);
 
 
         }
