@@ -4,7 +4,7 @@ using System.Text;
 
 namespace P01.Libraries.Model
 {
-    class User : BaseModel
+    public class atesUser : BaseModel
     {
         public string Name { get; set; }
         public string Account { get; set; }

@@ -6,8 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Xml" Version="3.1.2" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\P01.Libraries.DAL\P01.Libraries.DAL.csproj" />
     <ProjectReference Include="..\P01.Libraries.IDAL\P01.Libraries.IDAL.csproj" />
+    <ProjectReference Include="..\P01.Libraries.Model\P01.Libraries.Model.csproj" />
   </ItemGroup>
 
 </Project>

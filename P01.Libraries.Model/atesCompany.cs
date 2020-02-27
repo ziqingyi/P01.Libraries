@@ -4,7 +4,7 @@ using System.Text;
 
 namespace P01.Libraries.Model
 {
-    class Company : BaseModel
+    public class atesCompany : BaseModel
     {
         public string name { get; set; }
         public DateTime CreateTime { get; set; }
