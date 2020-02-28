@@ -19,7 +19,12 @@ namespace P01.Libraries.DAL
         private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
         public bool Add<T>(T t) where T : BaseModel
         {
-            throw new NotImplementedException();
+            Type type = typeof(T);
+            String sql = $"INSERT INTO ([{type.Name}] ({string.Join(",", type.GetProperties().Select(p=>$"[{p.Name}]"))} )"
+                          +"values({ }  )"    ;
+
+
+            return true;
         }
 
         public bool Delete<T>(T t) where T : BaseModel
