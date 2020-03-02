@@ -27,9 +27,18 @@ namespace P01.Libraries
 
             var tlinq = type.GetProperties().Select(p => p.Name);
 
+
+
             String sql =
                 $"INSERT INTO ([{type.Name}] ({string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"))} )";
+            
+            atesUser u = new atesUser("user2", "accout2", "password2", "email@gmail.com", "0466666666", 1,
+                "google", 1, 1, new DateTime(2019,12,20), new DateTime(2018,01,01), 1111,111);
 
+
+            var temp = u.GetType().GetProperties();
+
+            //String sql2 = $"Values( {string.Join(",",u.GetType().GetProperties().Select(p => $"[{p.}]") )}             )";
 
             Console.ReadKey();
         }

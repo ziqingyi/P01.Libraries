@@ -26,6 +26,19 @@ namespace P01.Libraries.Model
             DateTime createTime,      int creatorId,  int? lastmodifierId
         )
         {
+            Name = name;
+            Account = account;
+            Password = password;
+            Email = email;
+            Mobile = mobile;
+            CompanyId = companyId;
+            CompanyName = companyName;
+            State = state;
+            UserType = usertype;
+            LastLoginTime = lastlogintime;
+            CreateTime = createTime;
+            CreatorId = creatorId;
+            LastModifierId = lastmodifierId;
 
         }
     }
