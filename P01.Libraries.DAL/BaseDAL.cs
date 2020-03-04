@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using P01.Libraries.IDAL;
 using P01.Libraries.Model;
@@ -19,12 +20,26 @@ namespace P01.Libraries.DAL
         private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
         public bool Add<T>(T t) where T : BaseModel
         {
-            Type type = typeof(T);
-            String sql = $"INSERT INTO ([{type.Name}] ({string.Join(",", type.GetProperties().Select(p=>$"[{p.Name}]"))} )"
-                          +"values({ }  )"    ;
+            Type type = t.GetType();
+            var test = type.GetProperties();
+            var tlinq = type.GetProperties().Select(p => p.Name);
+            //should not have inherted members. 
+            String columnString = string.Join(",",
+                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                    .Select(p => $"[{p.Name}]"));
 
+            String valueColumn = String.Join(",",
+                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p => $"'{p.GetValue(t)}'"));
 
-            return true;
+            String sql =
+                $"INSERT INTO [{type.Name}]  ({columnString}) values ({valueColumn})";
+            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            {
+                SqlCommand cmd = new SqlCommand(sql,conn);
+                conn.Open();
+                return cmd.ExecuteNonQuery()==1;
+            }
+
         }
 
         public bool Delete<T>(T t) where T : BaseModel
@@ -57,6 +72,7 @@ namespace P01.Libraries.DAL
                         {
                             // notice the null from database 
                             prop.SetValue(obj, reader[prop.Name] is DBNull? null: reader[prop.Name]);
+                            
                         }
                         reader.Close();
                         return (T) obj;

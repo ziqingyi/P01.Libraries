@@ -16,14 +16,14 @@ namespace P01.Libraries.Model
         public int State { get; set; }
         public int UserType { get; set; }
         public DateTime? LastLoginTime { get; set; }
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
         public int CreatorId { get; set; }
         public int? LastModifierId { get; set; }
 
         public atesUser(string name, string account, string password,
             string email, string mobile, int? companyId,  string companyName,
             int state,  int usertype, DateTime? lastlogintime,
-            DateTime createTime,      int creatorId,  int? lastmodifierId
+            DateTime? createTime,      int creatorId,  int? lastmodifierId
         )
         {
             Name = name;
