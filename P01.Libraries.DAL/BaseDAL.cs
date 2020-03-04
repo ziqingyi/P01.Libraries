@@ -20,6 +20,30 @@ namespace P01.Libraries.DAL
         private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
         public bool Add<T>(T t) where T : BaseModel
         {
+            #region method 1
+            //Type type = t.GetType();
+            //var test = type.GetProperties();
+            //var tlinq = type.GetProperties().Select(p => p.Name);
+            ////should not have inherted members. 
+            //String columnString = string.Join(",",
+            //    type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+            //        .Select(p => $"[{p.Name}]"));
+
+            //String valueColumn = String.Join(",",
+            //    type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p => $"'{p.GetValue(t)}'"));
+
+            //String sql =
+            //    $"INSERT INTO [{type.Name}]  ({columnString}) values ({valueColumn})";
+            //using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            //{
+            //    SqlCommand cmd = new SqlCommand(sql,conn);
+            //    conn.Open();
+            //    return cmd.ExecuteNonQuery()==1;
+            //}
+            #endregion
+
+            #region method 2
+            // avoid sql injection, so use parameterized query
             Type type = t.GetType();
             var test = type.GetProperties();
             var tlinq = type.GetProperties().Select(p => p.Name);
@@ -29,17 +53,25 @@ namespace P01.Libraries.DAL
                     .Select(p => $"[{p.Name}]"));
 
             String valueColumn = String.Join(",",
-                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p => $"'{p.GetValue(t)}'"));
+                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                    .Select(p => $"@{p.Name}")); //not get value, prepare @value as parameter name
+
+            var parameterList = type
+                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+                .Select(p => new SqlParameter($"@{p.Name}",p.GetValue(t)?? "")); 
+            //can use DBNull.Value, but some column not null
+
 
             String sql =
                 $"INSERT INTO [{type.Name}]  ({columnString}) values ({valueColumn})";
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
             {
-                SqlCommand cmd = new SqlCommand(sql,conn);
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddRange(parameterList.ToArray());
                 conn.Open();
-                return cmd.ExecuteNonQuery()==1;
+                return cmd.ExecuteNonQuery() == 1;
             }
-
+            #endregion
         }
 
         public bool Delete<T>(T t) where T : BaseModel
