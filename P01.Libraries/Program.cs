@@ -24,7 +24,7 @@ namespace P01.Libraries
             //2 test insert method, 1: how to make sql through type attribute of object
             // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
             //Type type2 = typeof(atesUser); //  u.GetType(); is same
-            atesUser u = new atesUser("user2", "accout2", "password2", "email@gmail.com", "0466666666", 1,
+            atesUser u = new atesUser("user3", "accout2", "password2", "email@gmail.com", "0466666666", 1,
                 "google", 1, 1,null, null, 1111, 111);
             BaseDAL b = new BaseDAL();
             bool testresult = b.Add(u);
