@@ -43,18 +43,11 @@ namespace P01.Libraries.DAL
             #endregion
 
             #region method 2
-            // avoid sql injection, so use parameterized query
-            Type type = t.GetType();
-            var test = type.GetProperties();
-            var tlinq = type.GetProperties().Select(p => p.Name);
-            //should not have inherted members. 
-            String columnString = string.Join(",",
-                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                    .Select(p => $"[{p.Name}]"));
+            Type type = typeof(T);
+            String sql = MySqlBuilder<T>.FindSql;
+            // static construct method be called only once before first use of static element or new instance
 
-            String valueColumn = String.Join(",",
-                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                    .Select(p => $"@{p.Name}")); //not get value, prepare @value as parameter name
+
 
             var parameterList = type
                 .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
@@ -62,8 +55,7 @@ namespace P01.Libraries.DAL
             //can use DBNull.Value, but some column not null
 
 
-            String sql =
-                $"INSERT INTO [{type.Name}]  ({columnString}) values ({valueColumn})";
+           
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
             {
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -81,7 +73,10 @@ namespace P01.Libraries.DAL
 
         public List<T> FindAll<T>() where T : BaseModel
         {
-            throw new NotImplementedException();
+            Type type = typeof(T);
+
+            return null;
+
         }
 
         public T FindT<T>(int id) where T : BaseModel
