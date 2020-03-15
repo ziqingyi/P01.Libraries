@@ -44,18 +44,14 @@ namespace P01.Libraries.DAL
 
             #region method 2
             Type type = typeof(T);
-            String sql = MySqlBuilder<T>.FindSql;
+            String sql = MySqlBuilder<T>.InsertSql;
             // static construct method be called only once before first use of static element or new instance
-
-
 
             var parameterList = type
                 .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                 .Select(p => new SqlParameter($"@{p.Name}",p.GetValue(t)?? "")); 
             //can use DBNull.Value, but some column not null
 
-
-           
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
             {
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -74,8 +70,32 @@ namespace P01.Libraries.DAL
         public List<T> FindAll<T>() where T : BaseModel
         {
             Type type = typeof(T);
+            List<T> allObj = new List<T>();
+            String Sql = MySqlBuilder<T>.FindAllSql;
 
-            return null;
+            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            {
+                conn.Open();
+                using (SqlCommand command = new SqlCommand(Sql, conn))
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        object obj = Activator.CreateInstance(type);
+
+                        foreach (var prop in type.GetProperties())
+                        {
+                            // notice the null from database 
+                            prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
+
+                        }
+                        reader.Close();
+                        allObj.Add( (T)obj);
+                    }
+                }
+            }
+
+            return allObj;
 
         }
 
@@ -108,14 +128,8 @@ namespace P01.Libraries.DAL
                     {
                         return null; //not exist in database 
                     }
-
-                    
                 }
-
-
             }
-
-
         }
 
         public bool Update<T>(T t) where T : BaseModel

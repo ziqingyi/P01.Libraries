@@ -12,18 +12,34 @@ namespace P01.Libraries.DAL
         public static string FindSql = "";
         public static string FindAllSql = "";
         public static string AddSql = "";
+        public static string InsertSql = "";
+
         //that's how to cache the fixed sql .  Generic method cache. 
+        //use static construction method, which only run one time.
         static MySqlBuilder()
         {
             Type type = typeof(T);
-            FindSql = FindSqlBuilder<T>();
-
+            InsertSql = InsertSqlBuilder<T>();
+            FindAllSql = FindAllSqlBuilder<T>();
 
 
 
         }
 
-        private static string FindSqlBuilder<T>()
+        private static string FindAllSqlBuilder<T>()
+        {
+            Type type = typeof(T);
+            var test = type.GetProperties().Select(p => p.Name);
+            var test2 = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p=> p.Name);
+
+            String columnString = string.Join(",", type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p=>p.Name));
+            String sql = $"Select {columnString} from {type.Name} ";
+
+            return sql;
+
+        }
+
+        private static string InsertSqlBuilder<T>()
         {
             // avoid sql injection, so use parameterized query
             Type type = typeof(T);
