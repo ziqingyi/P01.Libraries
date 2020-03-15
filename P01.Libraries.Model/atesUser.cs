@@ -20,6 +20,10 @@ namespace P01.Libraries.Model
         public int CreatorId { get; set; }
         public int? LastModifierId { get; set; }
 
+        public atesUser()
+        {
+
+        }
         public atesUser(string name, string account, string password,
             string email, string mobile, int? companyId,  string companyName,
             int state,  int usertype, DateTime? lastlogintime,

@@ -21,17 +21,20 @@ namespace P01.Libraries
             //BaseDAL b = new BaseDAL();
             //atesUser u1 = b.FindT<atesUser>(1);
 
+            /*
             //2 test insert method, 1: how to make sql through type attribute of object
-            // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
-            //Type type2 = typeof(atesUser); //  u.GetType(); is same
+                     // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
+                     //Type type2 = typeof(atesUser); //  u.GetType(); is same
             atesUser u = new atesUser("user4", "accout4", "password4", "email4@gmail.com", "0466666666", 1,
                 "google", 1, 1, null, null, 1111, 111);
             BaseDAL b = new BaseDAL();
             bool testresult = b.Add(u);
+            */
+
 
             // 3 test FindAll method
             BaseDAL find = new BaseDAL();
-
+            var listofOjb = find.FindAll<atesUser>();
 
 
 
