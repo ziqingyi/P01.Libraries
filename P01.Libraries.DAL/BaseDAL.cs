@@ -89,9 +89,10 @@ namespace P01.Libraries.DAL
                             prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
 
                         }
-                        reader.Close();
+                        
                         allObj.Add( (T)obj);
                     }
+                    reader.Close();
                 }
             }
 
