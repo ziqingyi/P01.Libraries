@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,25 +15,35 @@ namespace P01.Libraries.DAL
         public static string AddSql = "";
         public static string InsertSql = "";
 
+        //should be public, for add method
+        public static PropertyInfo[] propList;
         //that's how to cache the fixed sql .  Generic method cache. 
         //use static construction method, which only run one time.
+        //note: the properties in sql should be same to the properties you create obj(eg. for each get more prop?!)
         static MySqlBuilder()
         {
             Type type = typeof(T);
+            propList = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
             InsertSql = InsertSqlBuilder<T>();
             FindAllSql = FindAllSqlBuilder<T>();
 
 
 
         }
-
+        public T CreateObjectFromSqlDataReader<T>(Type type, SqlDataReader reader)
+        {
+            object obj = Activator.CreateInstance(type);
+            foreach (var prop in propList)
+            {
+                // notice the null from database 
+                prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
+            }
+            return (T)obj;
+        }
         private static string FindAllSqlBuilder<T>()
         {
             Type type = typeof(T);
-            var test = type.GetProperties().Select(p => p.Name);
-            var test2 = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p=> p.Name);
-
-            String columnString = string.Join(",", type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p=>p.Name));
+            String columnString = string.Join(",", propList.Select(p=>p.Name));
             String sql = $"Select {columnString} from {type.Name} ";
 
             return sql;
@@ -46,13 +57,9 @@ namespace P01.Libraries.DAL
             var test = type.GetProperties();
             var tlinq = type.GetProperties().Select(p => p.Name);
             //should not have inherted members. 
-            String columnString = string.Join(",",
-                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                    .Select(p => $"[{p.Name}]"));
+            String columnString = string.Join(",", propList.Select(p => $"[{p.Name}]"));
 
-            String valueColumn = String.Join(",",
-                type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                    .Select(p => $"@{p.Name}")); //not get value, prepare @value as parameter name
+            String valueColumn = String.Join(",", propList.Select(p => $"@{p.Name}")); //not get value, prepare @value as parameter name
             String sql =
                 $"INSERT INTO [{type.Name}]  ({columnString}) values ({valueColumn})";
             return sql;
