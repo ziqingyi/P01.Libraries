@@ -17,7 +17,7 @@ namespace P01.Libraries
 
             //String tt = ConfigurationManager.ConnectionStrings["myCustomConfig"].ConnectionString;//"server=netcrmau;uid=dev;pwd='';database=Backup";
 
-            ////1 test search by id method 
+            //1 test search by id method 
             //BaseDAL b = new BaseDAL();
             //atesUser u1 = b.FindT<atesUser>(1);
 
@@ -31,6 +31,11 @@ namespace P01.Libraries
             bool testresult = b.Add(u);
             */
 
+            //difference between Getproperties.
+            var prop1 = typeof(atesUser).GetProperties();
+            var prop2 = typeof(atesUser).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance |BindingFlags.Public);
+            var test = typeof(atesUser).GetProperties().Select(p => p.Name);
+            var test2 = typeof(atesUser).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p => p.Name);
 
             // 3 test FindAll method
             BaseDAL find = new BaseDAL();

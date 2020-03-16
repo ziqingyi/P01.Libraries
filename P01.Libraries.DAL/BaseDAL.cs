@@ -43,12 +43,11 @@ namespace P01.Libraries.DAL
             #endregion
 
             #region method 2
-            Type type = typeof(T);
             String sql = MySqlBuilder<T>.InsertSql;
             // static construct method be called only once before first use of static element or new instance
 
-            var parameterList = type
-                .GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
+            //use same list from builder. 
+            var parameterList = MySqlBuilder<T>.propList
                 .Select(p => new SqlParameter($"@{p.Name}",p.GetValue(t)?? "")); 
             //can use DBNull.Value, but some column not null
 
@@ -83,12 +82,9 @@ namespace P01.Libraries.DAL
                     {
                         object obj = Activator.CreateInstance(type);
 
-                        foreach (var prop in type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public))
-                        {
-                            // notice the null from database 
-                            prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
+                        obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader(type, reader);
 
-                        }
+                        
                         
                         allObj.Add( (T)obj);
                     }
@@ -132,6 +128,7 @@ namespace P01.Libraries.DAL
                 }
             }
         }
+
 
         public bool Update<T>(T t) where T : BaseModel
         {
