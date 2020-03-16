@@ -83,7 +83,7 @@ namespace P01.Libraries.DAL
                     {
                         object obj = Activator.CreateInstance(type);
 
-                        foreach (var prop in type.GetProperties())
+                        foreach (var prop in type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public))
                         {
                             // notice the null from database 
                             prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
