@@ -41,6 +41,11 @@ namespace P01.Libraries
             BaseDAL find = new BaseDAL();
             var listofOjb = find.FindAll<atesUser>();
 
+            // 4 test delete method
+            
+            BaseDAL b4 = new BaseDAL();
+            atesUser u4 = b4.FindT<atesUser>(5);
+            bool testresult = b4.Delete(u4);
 
 
 
