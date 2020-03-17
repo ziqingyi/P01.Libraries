@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
@@ -97,11 +98,14 @@ namespace P01.Libraries.DAL
         {
             Type type = typeof(T);
             String Sql = MySqlBuilder<T>.FindSql;
+            SqlParameter p = new SqlParameter("@id", SqlDbType.Int);
+            p.Value = id;
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
             {
                 conn.Open();
                 using (SqlCommand command = new SqlCommand(Sql, conn))
                 {
+                    command.Parameters.Add(p);
                     SqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
                     {
