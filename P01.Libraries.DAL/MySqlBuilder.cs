@@ -12,7 +12,6 @@ namespace P01.Libraries.DAL
     {
         public static string FindSql = "";
         public static string FindAllSql = "";
-        public static string AddSql = "";
         public static string InsertSql = "";
 
         //should be public, for add method
@@ -30,15 +29,25 @@ namespace P01.Libraries.DAL
 
 
         }
-        public T CreateObjectFromSqlDataReader<T>(Type type, SqlDataReader reader)
+        public static T CreateObjectFromSqlDataReader<T>(SqlDataReader reader)
         {
-            object obj = Activator.CreateInstance(type);
+            object obj = Activator.CreateInstance(typeof(T));
             foreach (var prop in propList)
             {
                 // notice the null from database 
                 prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
             }
             return (T)obj;
+        }
+
+        private static string FindSqlBuilder<T>(int id)
+        {
+            Type type = typeof(T);
+            String Sql = $"SELECT {string.Join(",", propList.Select(p => $"[{p.Name}]"))}" +
+                         $"FROM [{type.Name}]" +
+                         $"WHERE ID= {id}";
+
+            return Sql;
         }
         private static string FindAllSqlBuilder<T>()
         {
