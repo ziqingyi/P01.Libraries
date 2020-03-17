@@ -82,10 +82,8 @@ namespace P01.Libraries.DAL
                     {
                         object obj = Activator.CreateInstance(type);
 
-                        obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader(type, reader);
+                        obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader<T>(reader);
 
-                        
-                        
                         allObj.Add( (T)obj);
                     }
                     reader.Close();
@@ -95,13 +93,10 @@ namespace P01.Libraries.DAL
             return allObj;
 
         }
-
         public T FindT<T>(int id) where T : BaseModel
         {
             Type type = typeof(T);
-            String Sql = $"SELECT {string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"))}" +
-                         $"FROM [{type.Name}]" +
-                         $"WHERE ID= {id}";
+            String Sql = MySqlBuilder<T>.FindSql;
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
             {
                 conn.Open();
@@ -111,13 +106,8 @@ namespace P01.Libraries.DAL
                     if (reader.Read())
                     {
                         object obj = Activator.CreateInstance(type);
+                        obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader<T>(reader);
 
-                        foreach (var prop in type.GetProperties())
-                        {
-                            // notice the null from database 
-                            prop.SetValue(obj, reader[prop.Name] is DBNull? null: reader[prop.Name]);
-                            
-                        }
                         reader.Close();
                         return (T) obj;
                     }
