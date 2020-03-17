@@ -64,7 +64,16 @@ namespace P01.Libraries.DAL
 
         public bool Delete<T>(T t) where T : BaseModel
         {
-            throw new NotImplementedException();
+            String Sql = MySqlBuilder<T>.DeleteSql;
+            SqlParameter p = new SqlParameter("@id", SqlDbType.Int);
+            p.Value = t.Id;
+            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            {
+                SqlCommand cmd = new SqlCommand(Sql,conn);
+                cmd.Parameters.Add(p);
+                conn.Open();
+                return cmd.ExecuteNonQuery() == 1;
+            }
         }
 
         public List<T> FindAll<T>() where T : BaseModel
