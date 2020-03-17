@@ -25,7 +25,7 @@ namespace P01.Libraries.DAL
             propList = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
             InsertSql = InsertSqlBuilder<T>();
             FindAllSql = FindAllSqlBuilder<T>();
-
+            FindSql = FindSqlBuilder<T>();
 
 
         }
@@ -40,13 +40,13 @@ namespace P01.Libraries.DAL
             return (T)obj;
         }
 
-        private static string FindSqlBuilder<T>(int id)
+        private static string FindSqlBuilder<T>()
         {
             Type type = typeof(T);
+            //id is assigned by DAL
             String Sql = $"SELECT {string.Join(",", propList.Select(p => $"[{p.Name}]"))}" +
                          $"FROM [{type.Name}]" +
-                         $"WHERE ID= {id}";
-
+                         "WHERE ID=  @id";
             return Sql;
         }
         private static string FindAllSqlBuilder<T>()
