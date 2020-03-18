@@ -122,3 +122,34 @@ INSERT INTO [dbo].[atesUser]
            ,'2018-12-12')
 GO
 
+INSERT INTO [dbo].[atesUser]
+           ([Name]
+           ,[Account]
+           ,[Password]
+           ,[Email]
+           ,[Mobile]
+           ,[CompanyId]
+           ,[CompanyName]
+           ,[State]
+           ,[UserType]
+           ,[LastLoginTime]
+           ,[CreateTime]
+           ,[CreatorId]
+           ,[LastModifierId]
+           ,[LastModifyTime])
+     VALUES
+           ('user2'
+           ,'staff2'
+           ,'e143220f883e'
+           ,'user2@gmail.com'
+           ,'0266666666'	
+           ,'1'	
+           ,'baijie'	
+           ,0
+           ,2
+           ,'2019-12-12'	
+           ,'2018-12-12'
+           ,1
+           ,1
+           ,'2018-12-12')
+GO

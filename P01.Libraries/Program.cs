@@ -31,22 +31,25 @@ namespace P01.Libraries
             bool testresult = b2.Add(u);
             */
 
-            //difference between Getproperties.
-            var prop1 = typeof(atesUser).GetProperties();
-            var prop2 = typeof(atesUser).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance |BindingFlags.Public);
-            var test = typeof(atesUser).GetProperties().Select(p => p.Name);
-            var test2 = typeof(atesUser).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p => p.Name);
+            ////difference between Getproperties.
+            //var prop1 = typeof(atesUser).GetProperties();
+            //var prop2 = typeof(atesUser).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance |BindingFlags.Public);
+            //var test = typeof(atesUser).GetProperties().Select(p => p.Name);
+            //var test2 = typeof(atesUser).GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public).Select(p => p.Name);
 
-            // 3 test FindAll method
-            BaseDAL find = new BaseDAL();
-            var listofOjb = find.FindAll<atesUser>();
+            //// 3 test FindAll method
+            //BaseDAL find = new BaseDAL();
+            //var listofOjb = find.FindAll<atesUser>();
 
-            // 4 test delete method
-            
-            BaseDAL b4 = new BaseDAL();
-            atesUser u4 = b4.FindT<atesUser>(5);
-            bool testresult = b4.Delete(u4);
-
+            //// 4 test delete method
+            //BaseDAL b4 = new BaseDAL();
+            //atesUser u4 = b4.FindT<atesUser>(5);
+            //bool testresult = b4.Delete(u4);
+            //  5 test modify
+            BaseDAL b5 = new BaseDAL();
+            atesUser u2 = b5.FindT<atesUser>(2);
+            u2.LastModifierId = 2;
+            bool testmodify = b5.Update(u2);
 
 
             Console.ReadKey();

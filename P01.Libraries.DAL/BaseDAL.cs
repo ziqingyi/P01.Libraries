@@ -18,7 +18,8 @@ namespace P01.Libraries.DAL
     public class BaseDAL : IBaseDAL
     {
         //private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
-        private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
+        //private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
+        private static string ConnectionStringCustomers = @"server=.;uid=sa;pwd=123;database=RPracticeDB";
         public bool Add<T>(T t) where T : BaseModel
         {
             #region method 1
@@ -135,7 +136,26 @@ namespace P01.Libraries.DAL
 
         public bool Update<T>(T t) where T : BaseModel
         {
-            throw new NotImplementedException();
+            Type type = typeof(T);
+
+            String Sql = MySqlBuilder<T>.ModifySql;
+            List<SqlParameter> list = new List<SqlParameter>();
+            //then build your sql parameters.
+            foreach (var prop in type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public))
+            {
+                //test parameter type
+                string pname = "@" + prop.Name;
+                SqlParameter para = new SqlParameter(pname,prop.PropertyType);
+                list.Add(para);
+            }
+
+
+
+
+
+            return true;
         }
     }
 }
+
+
