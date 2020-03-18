@@ -14,10 +14,11 @@ namespace P01.Libraries.DAL
         public static string FindAllSql = "";
         public static string InsertSql = "";
         public static string DeleteSql = "";
+        public static string ModifySql = "";
 
         //should be public, for add method
         public static PropertyInfo[] propList;
-        public static PropertyInfo[] propListPub;
+        public static PropertyInfo[] propListAllPub;
         //that's how to cache the fixed sql .  Generic method cache. 
         //use static construction method, which only run one time.
         //note: the properties in sql should be same to the properties you create obj(eg. for each get more prop?!)
@@ -25,24 +26,37 @@ namespace P01.Libraries.DAL
         {
             Type type = typeof(T);
             propList = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
-            propListPub = type.GetProperties( BindingFlags.Instance | BindingFlags.Public);
+            propListAllPub = type.GetProperties( BindingFlags.Instance | BindingFlags.Public);
+
             InsertSql = InsertSqlBuilder<T>();
             FindAllSql = FindAllSqlBuilder<T>();
             FindSql = FindSqlBuilder<T>();
             DeleteSql = DeleteSqlBuilder<T>();
-
+            ModifySql = ModifySqlBuilder<T>();
         }
+
+
         public static T CreateObjectFromSqlDataReader<T>(SqlDataReader reader)
         {
             object obj = Activator.CreateInstance(typeof(T));
-            foreach (var prop in propListPub)
+            foreach (var prop in propListAllPub)
             {
                 // notice the null from database 
                 prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
             }
             return (T)obj;
         }
+        private static String ModifySqlBuilder<T>()
+        {
+            Type type = typeof(T);
+            String Sql = "Update a " +
+                         $"Set {String.Join(",", propListAllPub.Select(p=> $" [{p.Name}] = @{p.Name} ")) }" +
+                         $"From [{type.Name}] a " +
+                         $"Where id = @id";
 
+            return Sql;
+
+        }
         private static string DeleteSqlBuilder<T>()
         {
             Type type = typeof(T);
@@ -53,7 +67,7 @@ namespace P01.Libraries.DAL
         {
             Type type = typeof(T);
             //id is assigned by DAL
-            String Sql = $"SELECT {string.Join(",", propListPub.Select(p => $"[{p.Name}]"))}" +
+            String Sql = $"SELECT {string.Join(",", propListAllPub.Select(p => $"[{p.Name}]"))}" +
                          $"FROM [{type.Name}]" +
                          "WHERE ID=  @id";
             return Sql;
@@ -61,7 +75,7 @@ namespace P01.Libraries.DAL
         private static string FindAllSqlBuilder<T>()
         {
             Type type = typeof(T);
-            String columnString = string.Join(",", propListPub.Select(p=>p.Name));
+            String columnString = string.Join(",", propListAllPub.Select(p=>p.Name));
             String sql = $"Select {columnString} from {type.Name} ";
 
             return sql;
