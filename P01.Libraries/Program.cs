@@ -47,9 +47,9 @@ namespace P01.Libraries
             //bool testresult = b4.Delete(u4);
             //  5 test modify
             BaseDAL b5 = new BaseDAL();
-            atesUser u2 = b5.FindT<atesUser>(2);
-            u2.LastModifierId = 2;
-            bool testmodify = b5.Update(u2);
+            atesUser u3 = b5.FindT<atesUser>(3);
+            u3.LastModifierId = 3;
+            bool testmodify = b5.Update(u3);
 
 
             Console.ReadKey();

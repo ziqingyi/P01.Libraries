@@ -18,8 +18,8 @@ namespace P01.Libraries.DAL
     public class BaseDAL : IBaseDAL
     {
         //private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
-        //private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
-        private static string ConnectionStringCustomers = @"server=.;uid=sa;pwd=123;database=RPracticeDB";
+        private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
+        //private static string ConnectionStringCustomers = @"server=.;uid=sa;pwd=123;database=RPracticeDB";
         public bool Add<T>(T t) where T : BaseModel
         {
             #region method 1
@@ -140,20 +140,27 @@ namespace P01.Libraries.DAL
 
             String Sql = MySqlBuilder<T>.ModifySql;
             List<SqlParameter> list = new List<SqlParameter>();
-            //then build your sql parameters.
-            foreach (var prop in type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public))
+            //then build your sql parameters. need to have id.
+            foreach (var prop in MySqlBuilder<T>.propListAllPub)
             {
                 //test parameter type
                 string pname = "@" + prop.Name;
-                SqlParameter para = new SqlParameter(pname,prop.PropertyType);
+                SqlParameter para = new SqlParameter(pname,prop.PropertyType.Name);
+                para.Value = prop.GetValue(t);
                 list.Add(para);
             }
 
+            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            {
+                conn.Open();
+                using (SqlCommand command = new SqlCommand(Sql, conn))
+                {
+                    command.Parameters.AddRange(list.ToArray());
+                    return command.ExecuteNonQuery() == 1;
 
+                }
+            }
 
-
-
-            return true;
         }
     }
 }

@@ -49,8 +49,9 @@ namespace P01.Libraries.DAL
         private static String ModifySqlBuilder<T>()
         {
             Type type = typeof(T);
+            //don't set id, id just in where clause, so use proList here, for building params, need to have id.
             String Sql = "Update a " +
-                         $"Set {String.Join(",", propListAllPub.Select(p=> $" [{p.Name}] = @{p.Name} ")) }" +
+                         $"Set {String.Join(",", propList.Select(p=> $" [{p.Name}] = @{p.Name} ")) }" +
                          $"From [{type.Name}] a " +
                          $"Where id = @id";
 
