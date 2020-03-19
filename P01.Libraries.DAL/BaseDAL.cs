@@ -13,7 +13,8 @@ using P01.Libraries.Model;
 namespace P01.Libraries.DAL
 {
     /// <summary>
-    /// 
+    /// limit the type of T,
+    /// all T passed must have ID, so defined in BaseModel
     /// </summary>
     public class BaseDAL : IBaseDAL
     {
