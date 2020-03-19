@@ -10,7 +10,6 @@ namespace P01.Libraries.Framework
     //read configuration files, static class
     public class StaticConstraint
     {
-
         public readonly static string IBaseDALConfig = ConfigurationManager.AppSettings["IBaseDALConfig"];
 
     }

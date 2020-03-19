@@ -49,5 +49,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\P01.Libraries.Framework\P01.Libraries.Framework.csproj">
+      <Project>{F3812941-F68F-49B8-9968-D181729E8898}</Project>
+      <Name>P01.Libraries.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\P01.Libraries.IDAL\P01.Libraries.IDAL.csproj">
+      <Project>{96eacf51-85d3-464e-b869-7e7c51ebca09}</Project>
+      <Name>P01.Libraries.IDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
