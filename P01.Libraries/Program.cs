@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
 using P01.Libraries;
 using P01.Libraries.IDAL;
 using P01.Libraries.DAL;
@@ -45,11 +44,15 @@ namespace P01.Libraries
             //BaseDAL b4 = new BaseDAL();
             //atesUser u4 = b4.FindT<atesUser>(5);
             //bool testresult = b4.Delete(u4);
-            //  5 test modify
-            BaseDAL b5 = new BaseDAL();
-            atesUser u3 = b5.FindT<atesUser>(3);
-            u3.LastModifierId = 3;
-            bool testmodify = b5.Update(u3);
+            ////  5 test modify
+            //BaseDAL b5 = new BaseDAL();
+            //atesUser u3 = b5.FindT<atesUser>(3);
+            //u3.LastModifierId = 3;
+            //bool testmodify = b5.Update(u3);
+
+            autoCreateModel.BatchmappingModel();
+
+
 
 
             Console.ReadKey();

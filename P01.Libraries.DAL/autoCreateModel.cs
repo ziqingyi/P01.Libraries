@@ -25,10 +25,8 @@ namespace P01.Libraries.DAL
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-
-
+                        MappingModel(reader["name"].ToString());
                     }
-
                 }
             }
         }
@@ -36,6 +34,15 @@ namespace P01.Libraries.DAL
         //generate single object
         public static void MappingModel(string tablename)
         {
+            string sql = $" {GetTableInfoSql} where a.table_name = '{tablename}'";
+            using (SqlConnection conn = new SqlConnection(StaticConstraint.IBaseDALConfig))
+            {
+
+
+
+            }
+
+
 
         }
 
