@@ -21,17 +21,6 @@ namespace P01.Libraries.Framework
             Console.WriteLine("***********type.Name -- show --- end******************");
         }
 
-        public static void ShowType<T>(this IEnumerable<T> t)
-        {
-            Type type = t.GetType();
-            Console.WriteLine("**************type.Name--Show--Start**************");
-            foreach (var prop in type.GetProperties())
-            {
-                Console.WriteLine($" {type.Name}.{prop.Name} = {prop.GetValue(t)} ");
-            }
-            Console.WriteLine("**************type.Name--Show--End**************");
-        }
-
         public static void CreateTxt(string fileName, string content)
         {
             try
