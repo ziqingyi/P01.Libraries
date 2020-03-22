@@ -12,8 +12,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\P01.Libraries.DAL\P01.Libraries.DAL.csproj" />
-    <ProjectReference Include="..\P01.Libraries.IDAL\P01.Libraries.IDAL.csproj" />
-    <ProjectReference Include="..\P01.Libraries.Model\P01.Libraries.Model.csproj" />
+    <ProjectReference Include="..\P01.Libraries.IDAL\P01.Libraries.IDAL.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\P01.Libraries.Model\P01.Libraries.Model.csproj">
+      <Private>true</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
