@@ -20,7 +20,10 @@ namespace P01.Libraries.DAL
         public static PropertyInfo[] propList;
         public static PropertyInfo[] propListAllPub;
         //that's how to cache the fixed sql .  Generic method cache. 
-        //use static construction method, which only run one time.
+        //use static construction method, which only run one time.(So cache reduce the time of running this method)
+        //for different T, the compiler will generate different class.
+        //faster than dictionary(100), because dic store in hash table, search in memory,
+        //Generic class are  already compiled, so search in Cache.
         //note: the properties in sql should be same to the properties you create obj(eg. for each get more prop?!)
         static MySqlBuilder()
         {
