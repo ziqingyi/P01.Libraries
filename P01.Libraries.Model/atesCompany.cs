@@ -13,9 +13,6 @@ namespace P01.Libraries.Model
         //Nullable<int> 
 
         public DateTime? LastModifyTime { get; set; }
-
-
-
-
     }
+
 }

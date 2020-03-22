@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,16 +21,31 @@ namespace P01.Libraries.Framework
             Console.WriteLine("***********type.Name -- show --- end******************");
         }
 
-        //public static void ShowList<T>(this IEnumerable<T> t)
-        //{
-        //    Type type = t.GetType();
-        //    Console.WriteLine("**************type.Name--Show--Start**************");
-        //    foreach (var prop in type.GetProperties())
-        //    {
-        //        Console.WriteLine($"{type.Name}.{prop.Name}={prop.GetValue(t)}");
-        //    }
-        //    Console.WriteLine("**************type.Name--Show--End**************");
-        //}
+        public static void ShowType<T>(this IEnumerable<T> t)
+        {
+            Type type = t.GetType();
+            Console.WriteLine("**************type.Name--Show--Start**************");
+            foreach (var prop in type.GetProperties())
+            {
+                Console.WriteLine($" {type.Name}.{prop.Name} = {prop.GetValue(t)} ");
+            }
+            Console.WriteLine("**************type.Name--Show--End**************");
+        }
 
+        public static void CreateTxt(string fileName, string content)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(fileName, false);
+                sw.Write(content);
+                sw.Flush();
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }
