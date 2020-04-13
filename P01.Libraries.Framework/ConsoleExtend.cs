@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using P01.Libraries.Framework.Data;
 
 namespace P01.Libraries.Framework
 {
@@ -15,7 +16,7 @@ namespace P01.Libraries.Framework
             Console.WriteLine("***********type.Name -- show --- start******************");
             foreach (var prop in type.GetProperties())
             {
-                Console.WriteLine($" {type.Name}.{prop.Name} = {prop.GetValue(t)} ");
+                Console.WriteLine($" {type.Name}.{prop.Name} = {prop.GetValue(t)} , display name:{prop.GetDisplayName()}");
             }
 
             Console.WriteLine("***********type.Name -- show --- end******************");
