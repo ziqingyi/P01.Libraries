@@ -46,7 +46,7 @@ namespace P01.Libraries.DAL
             foreach (var prop in propListAllPub)
             {
                 // notice the null from database //prop.GetColumnName() is to get/check database name in attribute
-                prop.SetValue(obj, reader[prop.GetColumnName()] is DBNull ? null : reader[prop.Name]);
+                prop.SetValue(obj, reader[prop.GetColumnName()] is DBNull ? null : reader[prop.GetColumnName()]);
             }
             return (T)obj;
         }
