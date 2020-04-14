@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using P01.Libraries.Framework.Data;
 
 namespace P01.Libraries.Model
 {
@@ -13,7 +14,9 @@ namespace P01.Libraries.Model
         public string Mobile { get; set; }
         public int? CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public int State { get; set; }
+
+        [Column("State")]//in database, it's column name is State. 
+        public int Status { get; set; }
         public int UserType { get; set; }
         public DateTime? LastLoginTime { get; set; }
         public DateTime? CreateTime { get; set; }
@@ -37,13 +40,12 @@ namespace P01.Libraries.Model
             Mobile = mobile;
             CompanyId = companyId;
             CompanyName = companyName;
-            State = state;
+            Status = state;
             UserType = usertype;
             LastLoginTime = lastlogintime;
             CreateTime = createTime;
             CreatorId = creatorId;
             LastModifierId = lastmodifierId;
-
         }
     }
 }

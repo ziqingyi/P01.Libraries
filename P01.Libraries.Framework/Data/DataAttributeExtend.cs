@@ -28,7 +28,7 @@ namespace P01.Libraries.Framework.Data
 
         }
         /// <summary>
-        /// get the column name property through attribute. 
+        /// get the db column name of property through its' attribute. 
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
