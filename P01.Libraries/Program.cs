@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using P01.Libraries;
@@ -19,7 +20,7 @@ namespace P01.Libraries
             //1 test search by id method 
             BaseDAL b1 = new BaseDAL();
             atesUser u1 = b1.FindT<atesUser>(1);
-
+            Console.WriteLine(u1.Name);
             /*
             //2 test insert method, 1: how to make sql through type attribute of object
                      // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
