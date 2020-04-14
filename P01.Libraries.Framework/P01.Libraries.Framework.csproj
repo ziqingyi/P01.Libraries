@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleExtend.cs" />
+    <Compile Include="Data\ColumnAttribute.cs" />
     <Compile Include="Data\DataAttributeExtend.cs" />
     <Compile Include="Data\DisplayAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
