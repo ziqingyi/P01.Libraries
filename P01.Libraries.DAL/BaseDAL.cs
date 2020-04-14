@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using P01.Libraries.Framework;
 using P01.Libraries.IDAL;
 using P01.Libraries.Model;
 
@@ -19,7 +20,7 @@ namespace P01.Libraries.DAL
     public class BaseDAL : IBaseDAL
     {
         //private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
-        private static string ConnectionStringCustomers = @"server=netcrmau;uid=dev;pwd='';database=Backup";
+        private static string ConnectionStringCustomers = StaticConstraint.DBconnection;
         //private static string ConnectionStringCustomers = @"server=.;uid=sa;pwd=123;database=RPracticeDB";
         public bool Add<T>(T t) where T : BaseModel
         {
