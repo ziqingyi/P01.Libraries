@@ -17,8 +17,8 @@ namespace P01.Libraries
             //String tt = ConfigurationManager.ConnectionStrings["myCustomConfig"].ConnectionString;//"server=netcrmau;uid=dev;pwd='';database=Backup";
 
             //1 test search by id method 
-            //BaseDAL b1 = new BaseDAL();
-            //atesUser u1 = b1.FindT<atesUser>(1);
+            BaseDAL b1 = new BaseDAL();
+            atesUser u1 = b1.FindT<atesUser>(1);
 
             /*
             //2 test insert method, 1: how to make sql through type attribute of object
