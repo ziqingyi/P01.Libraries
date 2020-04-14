@@ -14,7 +14,7 @@ namespace P01.Libraries.Framework.Data
         {
             this._ColumnName = columnName;
         }
-        public string GetColumnName()
+        public string GetColumnAtt_Name()
         {
             return this._ColumnName;
         }

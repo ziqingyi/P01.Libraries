@@ -27,14 +27,18 @@ namespace P01.Libraries.Framework.Data
             }
 
         }
-
+        /// <summary>
+        /// get the column name property through attribute. 
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
         public static string GetColumnName(this PropertyInfo property)
         {
             if (property.IsDefined(typeof(ColumnAttribute), true))
             { 
                 ColumnAttribute attribute =
-                (ColumnAttribute) property.GetCustomAttribute(typeof(ColumnAttribute), true); 
-                return attribute.GetColumnName();
+                (ColumnAttribute) property.GetCustomAttribute(typeof(ColumnAttribute), true);
+                return attribute.GetColumnAtt_Name();
             }
             else
             {
