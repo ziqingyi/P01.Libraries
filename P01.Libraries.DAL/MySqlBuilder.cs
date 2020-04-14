@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using P01.Libraries.Framework.Data;
 using P01.Libraries.Model;
 
 namespace P01.Libraries.DAL
@@ -44,8 +45,8 @@ namespace P01.Libraries.DAL
             object obj = Activator.CreateInstance(typeof(T));
             foreach (var prop in propListAllPub)
             {
-                // notice the null from database 
-                prop.SetValue(obj, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
+                // notice the null from database //prop.GetColumnName() is to get/check database name in attribute
+                prop.SetValue(obj, reader[prop.GetColumnName()] is DBNull ? null : reader[prop.Name]);
             }
             return (T)obj;
         }
@@ -71,7 +72,7 @@ namespace P01.Libraries.DAL
         {
             Type type = typeof(T);
             //id is assigned by DAL
-            String Sql = $"SELECT {string.Join(" , ", propListAllPub.Select(p => $"[{p.Name}]"))} " +
+            String Sql = $"SELECT {string.Join(" , ", propListAllPub.Select(p => $"[{p.GetColumnName()}]"))} " +
                          $"FROM [{type.Name}] " +
                          "WHERE ID = @id";
             return Sql;
