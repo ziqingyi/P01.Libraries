@@ -38,7 +38,7 @@ namespace P01.Libraries.Framework.Data
             { 
                 ColumnAttribute attribute =
                 (ColumnAttribute) property.GetCustomAttribute(typeof(ColumnAttribute), true);
-                return attribute.GetColumnAtt_Name();
+                return attribute.GetColumnAtt_Name();// no format
             }
             else
             {
