@@ -21,7 +21,7 @@ namespace P01.Libraries.DAL
                                                   on(a.TABLE_NAME = b.TABLE_NAME and a.COLUMN_NAME = b.COLUMN_NAME)";
         public static void BatchmappingModel()
         {
-            using (SqlConnection conn = new SqlConnection(StaticConstraint.HomeDBconnection))
+            using (SqlConnection conn = new SqlConnection(StaticConstraint.DBconnection))
             {
                 using(SqlCommand cmd = new SqlCommand(GetALLTableSql,conn))
                 {
@@ -38,7 +38,7 @@ namespace P01.Libraries.DAL
         public static void MappingModel(string tablename)
         {
             string sql = $" {GetTableInfoSql} where a.table_name = '{tablename}'";
-            using (SqlConnection conn = new SqlConnection(StaticConstraint.HomeDBconnection))
+            using (SqlConnection conn = new SqlConnection(StaticConstraint.DBconnection))
             {
                 SqlCommand sqlCommand = new SqlCommand(sql,conn);
                 conn.Open();
