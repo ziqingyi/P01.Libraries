@@ -28,6 +28,21 @@ namespace P01.Libraries.Framework.Data
 
         }
 
+        public static string GetColumnName(this PropertyInfo property)
+        {
+            if (property.IsDefined(typeof(ColumnAttribute), true))
+            { 
+                ColumnAttribute attribute =
+                (ColumnAttribute) property.GetCustomAttribute(typeof(ColumnAttribute), true); 
+                return attribute.GetColumnName();
+            }
+            else
+            {
+                return property.Name;
+            }
+
+        }
+
 
 
     }
