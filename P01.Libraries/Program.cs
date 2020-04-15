@@ -18,18 +18,18 @@ namespace P01.Libraries
             //String tt = ConfigurationManager.ConnectionStrings["myCustomConfig"].ConnectionString;//"server=netcrmau;uid=dev;pwd='';database=Backup";
 
             //1 test search by id method 
-            BaseDAL b1 = new BaseDAL();
-            atesUser u1 = b1.FindT<atesUser>(1);
-            Console.WriteLine(u1.Name);
-            /*
+            //BaseDAL b1 = new BaseDAL();
+            //atesUser u1 = b1.FindT<atesUser>(1);
+            //Console.WriteLine(u1.Name);
+            
             //2 test insert method, 1: how to make sql through type attribute of object
                      // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
                      //Type type2 = typeof(atesUser); //  u.GetType(); is same
-            atesUser u = new atesUser("user5", "accout5", "password5", "email5@gmail.com", "0455555555", 2,
-                "google", 1, 1, null, null, 1111, 111);
+            atesUser u = new atesUser("user6", "accout6", "password6", "email6@gmail.com", "0466666666", 2,
+                "microsoft", 1, 1, null, null, 1111, 111);
             BaseDAL b2 = new BaseDAL();
             bool testresult = b2.Add(u);
-            */
+            Console.WriteLine();
 
             ////difference between Getproperties.
             //var prop1 = typeof(atesUser).GetProperties();
