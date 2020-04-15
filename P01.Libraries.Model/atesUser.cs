@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using P01.Libraries.Framework.Data;
+using P01.Libraries.Framework.Data.ValidateExtend;
 
 namespace P01.Libraries.Model
 {
-    public class atesUser : BaseModel
+    public class atesUser : BaseModel// the class name mapping with database table name? 
     {
         public string Name { get; set; }
+        [Required]
+        [StringLength(10,20)]
         public string Account { get; set; }
-        public String Password { get; set; }
+        [Required]
+        [StringLength(5, 10)]
+        public String Password { get; set; }// number  and letter? capital? 
         public string Email { get; set; }
         public string Mobile { get; set; }
         public int? CompanyId { get; set; }
