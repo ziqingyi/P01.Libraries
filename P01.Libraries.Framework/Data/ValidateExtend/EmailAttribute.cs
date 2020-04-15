@@ -10,20 +10,16 @@ namespace P01.Libraries.Framework.Data.ValidateExtend
     [AttributeUsage(AttributeTargets.Property)]
     public class EmailAttribute: AbstractValidateAttribute
     {
-        private static string EmailRegular = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
-    
+        private string _EmailRegular = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         
-
         public override bool Validate(object oValue)
         {
             bool test1 = oValue != null;
             bool test2 = !string.IsNullOrWhiteSpace(oValue.ToString()); 
-            bool test3 = Regex.IsMatch(oValue.ToString(), EmailRegular);
+            bool test3 = Regex.IsMatch(oValue.ToString(), this._EmailRegular);
 
             return test1 && test2 && test3;
         }
-
-
 
     }
 }
