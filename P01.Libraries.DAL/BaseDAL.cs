@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using P01.Libraries.Framework;
+using P01.Libraries.Framework.Data;
 using P01.Libraries.IDAL;
 using P01.Libraries.Model;
 
@@ -52,7 +53,7 @@ namespace P01.Libraries.DAL
 
             //use same list from builder. 
             var parameterList = MySqlBuilder<T>.propList
-                .Select(p => new SqlParameter($"@{p.Name}",p.GetValue(t)?? "")); 
+                .Select(p => new SqlParameter($"@{p.GetColumnName()}",p.GetValue(t)?? "")); 
             //can use DBNull.Value, but some column not null
 
             using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
@@ -146,7 +147,7 @@ namespace P01.Libraries.DAL
             foreach (var prop in MySqlBuilder<T>.propListAllPub)
             {
                 //test parameter type
-                string pname = "@" + prop.Name;
+                string pname = "@" + prop.GetColumnName();
                 SqlParameter para = new SqlParameter(pname,prop.PropertyType.Name);
                 para.Value = prop.GetValue(t);
                 list.Add(para);
