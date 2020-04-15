@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using P01.Libraries.Framework.Data.ValidateExtend;
 
 namespace P01.Libraries.Framework.Data
 {
@@ -47,7 +48,23 @@ namespace P01.Libraries.Framework.Data
 
         }
 
-
+        public static bool Validate<T>(this T t)
+        {
+            Type type = t.GetType();
+            foreach (var prop in type.GetProperties())
+            {
+                if (prop.IsDefined(typeof(AbstractValidateAttribute), true))
+                {
+                    object oValue = prop.GetValue(t);
+                    foreach (AbstractValidateAttribute att in prop.GetCustomAttributes(typeof(AbstractValidateAttribute), true))
+                    {
+                        if (!att.Validate(oValue))
+                            return false;
+                    }
+                }
+            }
+            return true;
+        }
 
     }
 }

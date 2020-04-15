@@ -71,6 +71,10 @@
     <Compile Include="Data\ColumnAttribute.cs" />
     <Compile Include="Data\DataAttributeExtend.cs" />
     <Compile Include="Data\DisplayAttribute.cs" />
+    <Compile Include="Data\ValidateExtend\AbstractValidateAttribute.cs" />
+    <Compile Include="Data\ValidateExtend\LongAttribute.cs" />
+    <Compile Include="Data\ValidateExtend\RequiredAttribute.cs" />
+    <Compile Include="Data\ValidateExtend\StringLengthAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticConstraint.cs" />
   </ItemGroup>
@@ -78,5 +82,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
