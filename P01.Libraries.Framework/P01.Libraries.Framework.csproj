@@ -74,6 +74,7 @@
     <Compile Include="Data\ValidateExtend\AbstractValidateAttribute.cs" />
     <Compile Include="Data\ValidateExtend\EmailAttribute.cs" />
     <Compile Include="Data\ValidateExtend\LongAttribute.cs" />
+    <Compile Include="Data\ValidateExtend\PhoneAttribute.cs" />
     <Compile Include="Data\ValidateExtend\RequiredAttribute.cs" />
     <Compile Include="Data\ValidateExtend\StringLengthAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
