@@ -21,15 +21,15 @@ namespace P01.Libraries
             //BaseDAL b1 = new BaseDAL();
             //atesUser u1 = b1.FindT<atesUser>(1);
             //Console.WriteLine(u1.Name);
-            
+
             //2 test insert method, 1: how to make sql through type attribute of object
-                     // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
-                     //Type type2 = typeof(atesUser); //  u.GetType(); is same
-            atesUser u = new atesUser("user6", "accout6", "password6", "email6@gmail.com", "0466666666", 2,
-                "microsoft", 1, 1, null, null, 1111, 111);
-            BaseDAL b2 = new BaseDAL();
-            bool testresult = b2.Add(u);
-            Console.WriteLine();
+            // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
+            //Type type2 = typeof(atesUser); //  u.GetType(); is same
+            //atesUser u = new atesUser("user6", "accout6", "password6", "email6@gmail.com", "0466666666", 2,
+            //    "microsoft", 1, 1, null, null, 1111, 111);
+            //BaseDAL b2 = new BaseDAL();
+            //bool testresult = b2.Add(u);
+            //Console.WriteLine();
 
             ////difference between Getproperties.
             //var prop1 = typeof(atesUser).GetProperties();
@@ -43,12 +43,13 @@ namespace P01.Libraries
 
             //// 4 test delete method
             //BaseDAL b4 = new BaseDAL();
-            //atesUser u4 = b4.FindT<atesUser>(5);
+            //atesUser u4 = b4.FindT<atesUser>(6);
             //bool testresult = b4.Delete(u4);
+            //Console.WriteLine();
             ////  5 test modify
             //BaseDAL b5 = new BaseDAL();
             //atesUser u3 = b5.FindT<atesUser>(3);
-            //u3.LastModifierId = 3;
+            //u3.LastModifierId = 10;
             //bool testmodify = b5.Update(u3);
 
             autoCreateModel.BatchmappingModel();
