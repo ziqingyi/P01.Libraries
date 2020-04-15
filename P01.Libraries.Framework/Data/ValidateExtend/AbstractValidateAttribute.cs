@@ -9,6 +9,6 @@ namespace P01.Libraries.Framework.Data.ValidateExtend
 {
     public abstract class AbstractValidateAttribute: System.Attribute
     {
-        public abstract bool Validate(object oValue);
+        public abstract ValidateErrorModel Validate(object oValue);
     }
 }

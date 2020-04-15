@@ -18,14 +18,47 @@ namespace P01.Libraries.Framework.Data.ValidateExtend
             this._Max = max;
         }
 
-        public override bool Validate(object oValue)
+        public override ValidateErrorModel Validate(object oValue)
         {
+
             bool test1 = oValue != null;
             var val = long.TryParse(oValue.ToString(), out long lValue);
             bool test2 = lValue >= this._Min;
             bool test3 = lValue <= this._Max;
 
-            return test1 && test2 && test3;
+            if (!test1)
+            {
+                return new ValidateErrorModel()
+                {
+                    Result = false,
+                    Message = $"{nameof(EmailAttribute)} oValue is null"
+                };
+            }
+            if (!test2)
+            {
+                return new ValidateErrorModel()
+                {
+                    Result = false,
+                    Message = $"{nameof(EmailAttribute)} oValue is less than min"
+                };
+            }
+            if (!test3)
+            {
+                return new ValidateErrorModel()
+                {
+                    Result = false,
+                    Message = $"{nameof(EmailAttribute)} oValue is more than max"
+                };
+            }
+            else
+            {
+                return new ValidateErrorModel()
+                {
+                    Result = true,
+                    Message = $"{nameof(EmailAttribute)} all good"
+                };
+            }
+
         }
 
 

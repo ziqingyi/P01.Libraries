@@ -71,6 +71,7 @@
     <Compile Include="Data\ColumnAttribute.cs" />
     <Compile Include="Data\DataAttributeExtend.cs" />
     <Compile Include="Data\DisplayAttribute.cs" />
+    <Compile Include="Data\ValidateErrorModel.cs" />
     <Compile Include="Data\ValidateExtend\AbstractValidateAttribute.cs" />
     <Compile Include="Data\ValidateExtend\EmailAttribute.cs" />
     <Compile Include="Data\ValidateExtend\LongAttribute.cs" />

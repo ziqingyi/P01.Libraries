@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,13 +13,45 @@ namespace P01.Libraries.Framework.Data.ValidateExtend
     {
         private string _EmailRegular = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         
-        public override bool Validate(object oValue)
+        public override ValidateErrorModel Validate(object oValue)
         {
             bool test1 = oValue != null;
             bool test2 = !string.IsNullOrWhiteSpace(oValue.ToString()); 
             bool test3 = Regex.IsMatch(oValue.ToString(), this._EmailRegular);
 
-            return test1 && test2 && test3;
+            if (!test1)
+            {
+                return new ValidateErrorModel()
+                {
+                    Result = false, Message = $"{nameof(EmailAttribute)} oValue is null"
+                };
+            }
+             if (!test2)
+            {
+                return new ValidateErrorModel()
+                {
+                    Result = false,
+                    Message = $"{nameof(EmailAttribute)} oValue is empty"
+                };
+            }
+
+             if (!test3)
+             {
+                 return new ValidateErrorModel()
+                 {
+                     Result = false,
+                     Message = $"{nameof(EmailAttribute)} oValue is null"
+                 };
+             }
+             else
+             {
+                return new ValidateErrorModel()
+                {
+                    Result = true,
+                    Message = $"{nameof(EmailAttribute)} all good"
+                };
+            }
+                
         }
 
     }
