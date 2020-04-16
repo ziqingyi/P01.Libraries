@@ -66,6 +66,24 @@ namespace P01.Libraries.Framework.Data
             }
             return  new ValidateErrorModel() { Result = true,Message = "Success"};
         }
-
+        public static List<ValidateErrorModel> ValidateAll<T>(this T t)
+        {
+            List<ValidateErrorModel> validates = new List<ValidateErrorModel>();
+            Type type = t.GetType();
+            foreach (var prop in type.GetProperties())
+            {
+                if (prop.IsDefined(typeof(AbstractValidateAttribute), true))
+                {
+                    object oValue = prop.GetValue(t);
+                    foreach (AbstractValidateAttribute att in prop.GetCustomAttributes(typeof(AbstractValidateAttribute), true))
+                    {
+                        var result = att.Validate(oValue);
+                        validates.Add(result);
+                    }
+                }
+            }
+            return validates;
+            //validates.Where(m => !m.Result);//return the model which validate is false 
+        }
     }
 }
