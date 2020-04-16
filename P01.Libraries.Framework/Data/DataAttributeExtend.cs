@@ -48,7 +48,7 @@ namespace P01.Libraries.Framework.Data
 
         }
 
-        public static bool Validate<T>(this T t)
+        public static ValidateErrorModel Validate<T>(this T t)
         {
             Type type = t.GetType();
             foreach (var prop in type.GetProperties())
@@ -58,12 +58,13 @@ namespace P01.Libraries.Framework.Data
                     object oValue = prop.GetValue(t);
                     foreach (AbstractValidateAttribute att in prop.GetCustomAttributes(typeof(AbstractValidateAttribute), true))
                     {
-                        if (!att.Validate(oValue))
-                            return false;
+                        var result = att.Validate(oValue);
+                        if (!result.Result)
+                            return result;
                     }
                 }
             }
-            return true;
+            return  new ValidateErrorModel() { Result = true,Message = "Success"};
         }
 
     }
