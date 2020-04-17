@@ -11,28 +11,33 @@ namespace P01.Libraries.Framework.Data
 {
     public static class DataAttributeExtend
     {
-        //use this method to display more user friendly property's name.
-        
+        //1 use this method to display more user friendly property's name.
         public static string GetDisplayName(this PropertyInfo property)
         {
-            if(property.IsDefined(typeof(DisplayAttribute), true))
+            //method 1, without delegate
+            //if(property.IsDefined(typeof(DisplayAttribute), true))
+            //{
+            //    DisplayAttribute attribute =
+            //        (DisplayAttribute) property.GetCustomAttribute(typeof(DisplayAttribute), true);
+            //    return attribute.GetDisplayName();
+            //}
+            //else
+            //{
+            //    // if not define this attribute,just show property's name
+            //    return property.Name;
+            //}
+            // method 2, use with delegate
+            Func<PropertyInfo, bool> funcParam1 = p => p.IsDefined(typeof(DisplayAttribute), true);
+            Func<PropertyInfo, string> funcParam2 = p =>
             {
-                DisplayAttribute attribute =
-                    (DisplayAttribute) property.GetCustomAttribute(typeof(DisplayAttribute), true);
+                DisplayAttribute attribute =(DisplayAttribute) p.GetCustomAttribute(typeof(DisplayAttribute), true);
                 return attribute.GetDisplayName();
-            }
-            else
-            {
-                // if not define this attribute,just show property's name
-                return property.Name;
-            }
+            };
+
+            return property.GetAttributeName(funcParam1, funcParam2);
 
         }
-        /// <summary>
-        /// get the db column name of property through its' attribute. 
-        /// </summary>
-        /// <param name="property"></param>
-        /// <returns></returns>
+        ///2 get the db column name of property through its' attribute. 
         public static string GetColumnName(this PropertyInfo property)
         {
             if (property.IsDefined(typeof(ColumnAttribute), true))
@@ -45,8 +50,30 @@ namespace P01.Libraries.Framework.Data
             {
                 return property.Name;
             }
-
         }
+        /// <summary>
+        ///  3 combine 1 and 2 to get property's attribute's information. inside the attribute obj,
+        ///     you can get string used for mark column name or some other information.
+        ///     need to use delegate
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static string GetAttributeName(this PropertyInfo property, Func<PropertyInfo,bool> func, Func<PropertyInfo,string> funcString )
+        {
+            if (func.Invoke(property))
+            {
+                return funcString.Invoke(property);
+            }
+            else
+            {
+                return property.Name;
+            }
+        }
+
+
+
+
 
         public static ValidateErrorModel Validate<T>(this T t)
         {
