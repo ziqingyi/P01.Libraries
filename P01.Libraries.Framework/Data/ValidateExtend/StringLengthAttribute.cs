@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@ namespace P01.Libraries.Framework.Data.ValidateExtend
 
         public StringLengthAttribute(int min, int max)
         {
+            //Func<object, ValidateErrorModel> func = new Func<object, ValidateErrorModel>(o => new ValidateErrorModel());
+            //this.base(func);
             this._Min = min;
             this._Max = max;
         }
