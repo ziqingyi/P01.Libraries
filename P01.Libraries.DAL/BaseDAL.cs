@@ -23,6 +23,19 @@ namespace P01.Libraries.DAL
         //private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
         private static string ConnectionStringCustomers = StaticConstraint.DBconnection;
         //private static string ConnectionStringCustomers = @"server=.;uid=sa;pwd=123;database=RPracticeDB";
+        private T ExecuteSql<T>(string sql, Func<SqlCommand, T> func)
+        {
+            //conn.begintransaction()
+            //try catch rollback
+            // command.Parameters.addrange(parameterlist.ToArray())
+            using(SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            { 
+                SqlCommand command = new SqlCommand(sql, conn);
+                
+                conn.Open();
+                return func.Invoke(command);
+            }
+        }
         public bool Add<T>(T t) where T : BaseModel
         {
             #region method 1
