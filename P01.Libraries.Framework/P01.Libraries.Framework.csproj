@@ -78,6 +78,7 @@
     <Compile Include="Data\ValidateExtend\PhoneAttribute.cs" />
     <Compile Include="Data\ValidateExtend\RequiredAttribute.cs" />
     <Compile Include="Data\ValidateExtend\StringLengthAttribute.cs" />
+    <Compile Include="MappingClassAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticConstraint.cs" />
   </ItemGroup>
