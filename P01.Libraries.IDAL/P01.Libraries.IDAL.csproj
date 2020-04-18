@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\P01.Libraries.Framework\P01.Libraries.Framework.csproj">
+      <Project>{F3812941-F68F-49B8-9968-D181729E8898}</Project>
+      <Name>P01.Libraries.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\P01.Libraries.Model\P01.Libraries.Model.csproj">
       <Project>{2e45b9d5-9efb-4b6b-ab66-f55042bdc07b}</Project>
       <Name>P01.Libraries.Model</Name>

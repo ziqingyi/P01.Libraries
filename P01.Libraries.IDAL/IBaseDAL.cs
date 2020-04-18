@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using P01.Libraries.Framework;
 using P01.Libraries.Model;
 
 namespace P01.Libraries.IDAL

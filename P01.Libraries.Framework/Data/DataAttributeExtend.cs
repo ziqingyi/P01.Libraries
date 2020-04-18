@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using P01.Libraries.Framework.Data.ValidateExtend;
@@ -37,7 +38,9 @@ namespace P01.Libraries.Framework.Data
             return property.GetAttributeName(funcParam1, funcParam2);
 
         }
-        ///2 get the db column name of property through its' attribute. 
+        ///2 get the db column name of property through its' attribute.
+        /// note: this is used for the instance of PropertyInfo,
+        /// this means you can get them by Type type = typeof(T); without creating a T object.
         public static string GetColumnName(this PropertyInfo property)
         {
             if (property.IsDefined(typeof(ColumnAttribute), true))
@@ -70,7 +73,20 @@ namespace P01.Libraries.Framework.Data
                 return property.Name;
             }
         }
-
+        // can not limit the T because this will not allow MySqlBuilder's type to get this mapping
+        public static string ClassMapping<T>(this T t) //where T:BaseModel
+        {
+            Type type = t.GetType();
+            if (type.IsDefined(typeof(MappingClassAttribute), true))
+            {
+                MappingClassAttribute att = (MappingClassAttribute)type.GetCustomAttribute(typeof(MappingClassAttribute), true);
+                return att.MappingName;
+            }
+            else
+            {
+                return type.Name;
+            }
+        }
 
         //-----------------------------validate -----------------------------------------------
 
