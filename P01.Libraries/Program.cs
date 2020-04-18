@@ -21,6 +21,10 @@ namespace P01.Libraries
             //BaseDAL b1 = new BaseDAL();
             //atesUser u1 = b1.FindT<atesUser>(1);
             //Console.WriteLine(u1.Name);
+            //1.1 test search by id by delegate
+            //BaseDAL b1 = new BaseDAL();
+            //atesUser u1 = b1.FindTwithDelegate<atesUser>(1);
+            //Console.WriteLine(u1.Name);
 
             //2 test insert method, 1: how to make sql through type attribute of object
             // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
@@ -47,10 +51,10 @@ namespace P01.Libraries
             //bool testresult = b4.Delete(u4);
             //Console.WriteLine();
             ////  5 test modify
-            //BaseDAL b5 = new BaseDAL();
-            //atesUser u3 = b5.FindT<atesUser>(3);
-            //u3.LastModifierId = 10;
-            //bool testmodify = b5.Update(u3);
+            BaseDAL b5 = new BaseDAL();
+            atesUser u3 = b5.FindT<atesUser>(2);
+            u3.CompanyName = "coke";
+            bool testmodify = b5.Update(u3);
 
             autoCreateModel.BatchmappingModel();
 

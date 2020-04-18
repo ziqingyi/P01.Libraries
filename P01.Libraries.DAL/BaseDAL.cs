@@ -23,19 +23,7 @@ namespace P01.Libraries.DAL
         //private static string ConnectionStringCustomers = ConfigurationManager.ConnectionStrings["Customers"].ConnectionString;
         private static string ConnectionStringCustomers = StaticConstraint.DBconnection;
         //private static string ConnectionStringCustomers = @"server=.;uid=sa;pwd=123;database=RPracticeDB";
-        private T ExecuteSql<T>(string sql, Func<SqlCommand, T> func)
-        {
-            //conn.begintransaction()
-            //try catch rollback
-            // command.Parameters.addrange(parameterlist.ToArray())
-            using(SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
-            { 
-                SqlCommand command = new SqlCommand(sql, conn);
-                
-                conn.Open();
-                return func.Invoke(command);
-            }
-        }
+       
         public bool Add<T>(T t) where T : BaseModel
         {
             #region method 1
@@ -116,9 +104,45 @@ namespace P01.Libraries.DAL
                     reader.Close();
                 }
             }
-
             return allObj;
+        }
+        private T ExecuteSql<T>(string sql, Func<SqlCommand, T> func)
+        {
+            //conn.begintransaction()
+            //try catch rollback
+            // command.Parameters.addrange(parameterlist.ToArray())
+            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            {
+                SqlCommand command = new SqlCommand(sql, conn);
+                conn.Open();
+                return func.Invoke(command);
+            }
+        }
 
+        public T FindTwithDelegate<T>(int id) where T : BaseModel
+        {
+            Type type = typeof(T);
+            String Sql = MySqlBuilder<T>.FindSql;
+            SqlParameter p = new SqlParameter("@id", SqlDbType.Int);
+            p.Value = id;
+            Func<SqlCommand, T> delogic = (command) =>
+                {
+                    //note this, when ExecuteSql() is working here, it still can add p.
+                    command.Parameters.Add(p);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        object obj = Activator.CreateInstance(type);
+                        obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader<T>(reader);
+                        reader.Close();
+                        return (T) obj;
+                    }
+                    else
+                    {
+                        return null; //not exist in database 
+                    }
+                };
+            return ExecuteSql(Sql, delogic);
         }
         public T FindT<T>(int id) where T : BaseModel
         {
@@ -165,17 +189,30 @@ namespace P01.Libraries.DAL
                 para.Value = prop.GetValue(t);
                 list.Add(para);
             }
+            // method 1, normal way to execute query
+            //using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            //{
+            //    conn.Open();
+            //    using (SqlCommand command = new SqlCommand(Sql, conn))
+            //    {
+            //        command.Parameters.AddRange(list.ToArray());
+            //        return command.ExecuteNonQuery() == 1;
+            //    }
+            //}
 
-            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+
+            Func<SqlCommand,bool> updateLogic = (command) =>
             {
-                conn.Open();
-                using (SqlCommand command = new SqlCommand(Sql, conn))
-                {
-                    command.Parameters.AddRange(list.ToArray());
-                    return command.ExecuteNonQuery() == 1;
+                command.Parameters.AddRange(list.ToArray());
+                return (command.ExecuteNonQuery() == 1);
+            };
 
-                }
-            }
+            return ExecuteSql(Sql, updateLogic);
+
+
+
+
+
 
         }
     }
