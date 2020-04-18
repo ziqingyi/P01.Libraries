@@ -73,7 +73,8 @@ namespace P01.Libraries.DAL
         {
             Type type = typeof(T);
             //id is assigned by DAL
-            String Sql = $"SELECT {string.Join(" , ", propListAllPub.Select(p => $"[{p.GetColumnName()}] as [{p.Name}]"))} " +
+            string columnString = $"{string.Join(" , ", propListAllPub.Select(p => $"[{p.GetColumnName()}] as [{p.Name}]"))} ";
+            string Sql = $"SELECT {columnString}" +
                          $"FROM [{type.Name}] " +
                          "WHERE ID = @id";
             return Sql;
@@ -81,7 +82,8 @@ namespace P01.Libraries.DAL
         private static string FindAllSqlBuilder<T>()
         {
             Type type = typeof(T);
-            String columnString = string.Join(" , ", propListAllPub.Select(p=>p.GetColumnName()));
+            // must use as p.name, because you need to create object based on the column name from sqlreader, 
+            String columnString = string.Join(" , ", propListAllPub.Select(p=>$"[{p.GetColumnName()}] as [{p.Name}]"));
             String sql = $"Select {columnString} from {type.Name} ";
 
             return sql;
