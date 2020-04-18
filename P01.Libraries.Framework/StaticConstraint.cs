@@ -23,7 +23,7 @@ namespace P01.Libraries.Framework
                 string home = "server=.;uid=sa;pwd=123;database=RPracticeDB";
                 //ConfigurationManager.ConnectionStrings["sql"].ConnectionString;
                 string work = @"server=netcrmau;uid=dev;pwd='';database=Backup";
-                DBconnection = work;//home;//test.Tostring
+                DBconnection = home;//work;//test.Tostring
 
                 ModelFilePath = @"C:\Users\adrian\Desktop";//ConfigurationManager ? 
                 ErrorFilePath = @"C:\Users\adrian\Desktop";//ConfigurationManager ? 
