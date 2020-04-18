@@ -29,8 +29,8 @@ namespace P01.Libraries
             //2 test insert method, 1: how to make sql through type attribute of object
             // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
             //Type type2 = typeof(atesUser); //  u.GetType(); is same
-            //atesUser u = new atesUser("user6", "accout6", "password6", "email6@gmail.com", "0466666666", 2,
-            //    "microsoft", 1, 1, null, null, 1111, 111);
+            //atesUser u = new atesUser("user3", "accout3", "password3", "email3@gmail.com", "0433333333", 1,
+            //    "microsoft", 1, 1, null, null, 2222, 222);
             //BaseDAL b2 = new BaseDAL();
             //bool testresult = b2.Add(u);
             //Console.WriteLine();
@@ -44,17 +44,17 @@ namespace P01.Libraries
             //// 3 test FindAll method
             //BaseDAL find = new BaseDAL();
             //var listofOjb = find.FindAll<atesUser>();
-
+            //Console.WriteLine();
             //// 4 test delete method
             //BaseDAL b4 = new BaseDAL();
-            //atesUser u4 = b4.FindT<atesUser>(6);
+            //atesUser u4 = b4.FindT<atesUser>(3);
             //bool testresult = b4.Delete(u4);
             //Console.WriteLine();
             ////  5 test modify
-            BaseDAL b5 = new BaseDAL();
-            atesUser u3 = b5.FindT<atesUser>(2);
-            u3.CompanyName = "coke";
-            bool testmodify = b5.Update(u3);
+            //BaseDAL b5 = new BaseDAL();
+            //atesUser u3 = b5.FindT<atesUser>(2);
+            //u3.CompanyName = "coke";
+            //bool testmodify = b5.Update(u3);
 
             autoCreateModel.BatchmappingModel();
 

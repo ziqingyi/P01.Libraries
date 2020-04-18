@@ -49,63 +49,113 @@ namespace P01.Libraries.DAL
             #endregion
 
             #region method 2
+            //String sql = MySqlBuilder<T>.InsertSql;
+            //// static construct method be called only once before first use of static element or new instance
+
+            ////use same list from builder. 
+            //var parameterList = MySqlBuilder<T>.propList
+            //    .Select(p => new SqlParameter($"@{p.GetColumnName()}",p.GetValue(t)?? "")); 
+            ////can use DBNull.Value, but some column not null
+
+            //using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            //{
+            //    SqlCommand cmd = new SqlCommand(sql, conn);
+            //    cmd.Parameters.AddRange(parameterList.ToArray());
+            //    conn.Open();
+            //    return cmd.ExecuteNonQuery() == 1;
+            //}
+            #endregion
+
+            #region method 3, update with delegate, using shared logic
             String sql = MySqlBuilder<T>.InsertSql;
             // static construct method be called only once before first use of static element or new instance
-
             //use same list from builder. 
             var parameterList = MySqlBuilder<T>.propList
-                .Select(p => new SqlParameter($"@{p.GetColumnName()}",p.GetValue(t)?? "")); 
+                .Select(p => new SqlParameter($"@{p.GetColumnName()}", p.GetValue(t) ?? ""));
             //can use DBNull.Value, but some column not null
-
-            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            Func<SqlCommand, bool> insertLogic = (command) =>
             {
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddRange(parameterList.ToArray());
-                conn.Open();
-                return cmd.ExecuteNonQuery() == 1;
-            }
+                command.Parameters.AddRange(parameterList.ToArray());
+                return command.ExecuteNonQuery() == 1;
+            };
+            return this.ExecuteSql(sql, insertLogic);
             #endregion
         }
 
         public bool Delete<T>(T t) where T : BaseModel
         {
+            #region method 1 simple one
+            //String Sql = MySqlBuilder<T>.DeleteSql;
+            //SqlParameter p = new SqlParameter("@id", SqlDbType.Int);
+            //p.Value = t.Id;
+            //using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            //{
+            //    SqlCommand cmd = new SqlCommand(Sql,conn);
+            //    cmd.Parameters.Add(p);
+            //    conn.Open();
+            //    return cmd.ExecuteNonQuery() == 1;
+            //}
+            #endregion
+            #region method 2 use delegate
             String Sql = MySqlBuilder<T>.DeleteSql;
             SqlParameter p = new SqlParameter("@id", SqlDbType.Int);
             p.Value = t.Id;
-            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            Func<SqlCommand, bool> deleteLogic = (command) =>
             {
-                SqlCommand cmd = new SqlCommand(Sql,conn);
-                cmd.Parameters.Add(p);
-                conn.Open();
-                return cmd.ExecuteNonQuery() == 1;
-            }
+                command.Parameters.Add(p);
+                return command.ExecuteNonQuery() == 1;
+            };
+            return ExecuteSql(Sql, deleteLogic);
+            #endregion
         }
 
         public List<T> FindAll<T>() where T : BaseModel
         {
+            #region method 1 , normaly way 
+            //Type type = typeof(T);
+            //List<T> allObj = new List<T>();
+            //String Sql = MySqlBuilder<T>.FindAllSql;
+            //using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            //{
+            //    conn.Open();
+            //    using (SqlCommand command = new SqlCommand(Sql, conn))
+            //    {
+            //        SqlDataReader reader = command.ExecuteReader();
+            //        while (reader.Read())
+            //        {
+            //            object obj = Activator.CreateInstance(type);
+
+            //            obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader<T>(reader);
+
+            //            allObj.Add( (T)obj);
+            //        }
+            //        reader.Close();
+            //    }
+            //}
+            //return allObj;
+            #endregion
+
+            #region method 2, use delegate
             Type type = typeof(T);
             List<T> allObj = new List<T>();
             String Sql = MySqlBuilder<T>.FindAllSql;
 
-            using (SqlConnection conn = new SqlConnection(ConnectionStringCustomers))
+            Func<SqlCommand, List<T>> findallLogic = (command) =>
             {
-                conn.Open();
-                using (SqlCommand command = new SqlCommand(Sql, conn))
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        object obj = Activator.CreateInstance(type);
-
-                        obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader<T>(reader);
-
-                        allObj.Add( (T)obj);
-                    }
-                    reader.Close();
+                    object obj = Activator.CreateInstance(type);
+                    obj = MySqlBuilder<T>.CreateObjectFromSqlDataReader<T>(reader);
+                    allObj.Add((T) obj);
                 }
-            }
-            return allObj;
+                reader.Close();
+                return allObj;
+            };
+            return ExecuteSql(Sql,findallLogic);
+            #endregion
         }
+        // help to build connection and prepare command, then pass SqlCommand to shared logic
         private T ExecuteSql<T>(string sql, Func<SqlCommand, T> func)
         {
             //conn.begintransaction()
@@ -199,21 +249,13 @@ namespace P01.Libraries.DAL
             //        return command.ExecuteNonQuery() == 1;
             //    }
             //}
-
-
+            // method 2, simply with delegate
             Func<SqlCommand,bool> updateLogic = (command) =>
             {
                 command.Parameters.AddRange(list.ToArray());
                 return (command.ExecuteNonQuery() == 1);
             };
-
             return ExecuteSql(Sql, updateLogic);
-
-
-
-
-
-
         }
     }
 }
