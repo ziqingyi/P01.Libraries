@@ -57,9 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="atesCompany.cs" />
+    <Compile Include="Company.cs" />
     <Compile Include="atesUser.cs" />
-    <Compile Include="BaseModel.cs" />
     <Compile Include="ImportFromExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

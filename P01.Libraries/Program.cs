@@ -52,10 +52,15 @@ namespace P01.Libraries
             //bool testresult = b4.Delete(u4);
             //Console.WriteLine();
             ////  5 test modify
-            //BaseDAL b5 = new BaseDAL();
-            //atesUser u3 = b5.FindT<atesUser>(2);
-            //u3.CompanyName = "coke";
-            //bool testmodify = b5.Update(u3);
+            BaseDAL b52 = new BaseDAL();
+            Company c1 = b52.FindT<Company>(2);
+            c1.name = "dongguan2";
+            bool testmodify2 = b52.Update(c1);
+
+            BaseDAL b5 = new BaseDAL();
+            atesUser u3 = b5.FindT<atesUser>(2);
+            u3.CompanyName = "coke2";
+            bool testmodify = b5.Update(u3);
 
             autoCreateModel.BatchmappingModel();
 

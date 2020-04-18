@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using P01.Libraries.Framework;
 using P01.Libraries.Framework.Data;
 
 namespace P01.Libraries.Model
 {
-    public class atesCompany : BaseModel
+    [MappingClass("atesCompany")]
+    public class Company : BaseModel
     {
         [Display("company name")]
         public string name { get; set; }

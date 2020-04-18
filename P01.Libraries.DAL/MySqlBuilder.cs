@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using P01.Libraries.Framework;
 using P01.Libraries.Framework.Data;
 using P01.Libraries.Model;
 
@@ -17,6 +18,7 @@ namespace P01.Libraries.DAL
         public static string DeleteSql = "";
         public static string ModifySql = "";
 
+        public static string tableName = "";
         //should be public, for add method
         public static PropertyInfo[] propList;
         public static PropertyInfo[] propListAllPub;
@@ -31,6 +33,8 @@ namespace P01.Libraries.DAL
             Type type = typeof(T);
             propList = type.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
             propListAllPub = type.GetProperties( BindingFlags.Instance | BindingFlags.Public);
+            T t = Activator.CreateInstance<T>();
+            tableName = t.ClassMapping();
 
             InsertSql = InsertSqlBuilder<T>();
             FindAllSql = FindAllSqlBuilder<T>();
@@ -51,13 +55,14 @@ namespace P01.Libraries.DAL
             }
             return (T)obj;
         }
-        private static String ModifySqlBuilder<T>()
+        private static String ModifySqlBuilder<T>() //where T:BaseModel
         {
-            Type type = typeof(T);
+            //Type type = typeof(T);//not get table name through type
             //don't set id, id just in where clause, so use proList here, for building params, need to have id.
             String Sql = "Update a " +
                          $"Set {String.Join(" , ", propList.Select(p=> $" [{p.GetColumnName()}] = @{p.GetColumnName()} ")) } " +
-                         $"From [{type.Name}] a " +
+                         //$"From [{type.Name}] a " +
+                         $"From [{tableName}] a " +
                          $"Where id = @id ";
 
             return Sql;
@@ -65,26 +70,26 @@ namespace P01.Libraries.DAL
         }
         private static string DeleteSqlBuilder<T>()
         {
-            Type type = typeof(T);
-            String Sql = $"Delete From [{type.Name}] where ID = @id";
+            //Type type = typeof(T);
+            String Sql = $"Delete From [{tableName}] where ID = @id";
             return Sql;
         }
         private static string FindSqlBuilder<T>()
         {
-            Type type = typeof(T);
+            //Type type = typeof(T);
             //id is assigned by DAL
             string columnString = $"{string.Join(" , ", propListAllPub.Select(p => $"[{p.GetColumnName()}] as [{p.Name}]"))} ";
             string Sql = $"SELECT {columnString}" +
-                         $"FROM [{type.Name}] " +
+                         $"FROM [{tableName}] " +
                          "WHERE ID = @id";
             return Sql;
         }
         private static string FindAllSqlBuilder<T>()
         {
-            Type type = typeof(T);
+            //Type type = typeof(T);
             // must use as p.name, because you need to create object based on the column name from sqlreader, 
             String columnString = string.Join(" , ", propListAllPub.Select(p=>$"[{p.GetColumnName()}] as [{p.Name}]"));
-            String sql = $"Select {columnString} from {type.Name} ";
+            String sql = $"Select {columnString} from {tableName} ";
 
             return sql;
 
@@ -101,7 +106,7 @@ namespace P01.Libraries.DAL
 
             String valueColumn = String.Join(",", propList.Select(p => $"@{p.GetColumnName()}")); //not get value, prepare @value as parameter name
             String sql =
-                $"INSERT INTO [{type.Name}]  ({columnString}) values ({valueColumn})";
+                $"INSERT INTO [{tableName}]  ({columnString}) values ({valueColumn})";
             return sql;
         }
 

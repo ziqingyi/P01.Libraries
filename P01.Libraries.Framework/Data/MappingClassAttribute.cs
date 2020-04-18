@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace P01.Libraries.Framework
+namespace P01.Libraries.Framework.Data
 {
+    // used for link to the database table name, sometimes the class name is diff to table name.
     [AttributeUsage(AttributeTargets.Class|AttributeTargets.Property)]
     public class MappingClassAttribute : Attribute
     {
