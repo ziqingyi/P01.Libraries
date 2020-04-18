@@ -6,6 +6,7 @@ using System.Reflection;
 using P01.Libraries;
 using P01.Libraries.IDAL;
 using P01.Libraries.DAL;
+using P01.Libraries.Framework;
 using P01.Libraries.Model;
 namespace P01.Libraries
 {
@@ -24,7 +25,7 @@ namespace P01.Libraries
             //1.1 test search by id by delegate
             //BaseDAL b1 = new BaseDAL();
             //atesUser u1 = b1.FindTwithDelegate<atesUser>(1);
-            //Console.WriteLine(u1.Name);
+            //u1.Show();
 
             //2 test insert method, 1: how to make sql through type attribute of object
             // new DateTime(2019, 12, 20)   new DateTime(2018, 01, 01)
