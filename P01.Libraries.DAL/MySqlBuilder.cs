@@ -43,8 +43,7 @@ namespace P01.Libraries.DAL
             ModifySql = ModifySqlBuilder<T>();
         }
 
-
-        public static T CreateObjectFromSqlDataReader<T>(SqlDataReader reader)
+        public static T CreateObjectFromSqlDataReader<T>(SqlDataReader reader) where T: BaseModel
         {
             object obj = Activator.CreateInstance(typeof(T));
             foreach (var prop in propListAllPub)
@@ -55,7 +54,7 @@ namespace P01.Libraries.DAL
             }
             return (T)obj;
         }
-        private static String ModifySqlBuilder<T>() //where T:BaseModel
+        private static String ModifySqlBuilder<T>() where T:BaseModel
         {
             //Type type = typeof(T);//not get table name through type
             //don't set id, id just in where clause, so use proList here, for building params, need to have id.
@@ -64,17 +63,15 @@ namespace P01.Libraries.DAL
                          //$"From [{type.Name}] a " +
                          $"From [{tableName}] a " +
                          $"Where id = @id ";
-
             return Sql;
-
         }
-        private static string DeleteSqlBuilder<T>()
+        private static string DeleteSqlBuilder<T>() where T: BaseModel
         {
             //Type type = typeof(T);
             String Sql = $"Delete From [{tableName}] where ID = @id";
             return Sql;
         }
-        private static string FindSqlBuilder<T>()
+        private static string FindSqlBuilder<T>() where T:BaseModel
         {
             //Type type = typeof(T);
             //id is assigned by DAL
@@ -84,18 +81,16 @@ namespace P01.Libraries.DAL
                          "WHERE ID = @id";
             return Sql;
         }
-        private static string FindAllSqlBuilder<T>()
+        private static string FindAllSqlBuilder<T>() where T: BaseModel
         {
             //Type type = typeof(T);
             // must use as p.name, because you need to create object based on the column name from sqlreader, 
             String columnString = string.Join(" , ", propListAllPub.Select(p=>$"[{p.GetColumnName()}] as [{p.Name}]"));
             String sql = $"Select {columnString} from {tableName} ";
-
             return sql;
-
         }
 
-        private static string InsertSqlBuilder<T>()
+        private static string InsertSqlBuilder<T>() where T: BaseModel
         {
             // avoid sql injection, so use parameterized query
             Type type = typeof(T);
@@ -109,6 +104,5 @@ namespace P01.Libraries.DAL
                 $"INSERT INTO [{tableName}]  ({columnString}) values ({valueColumn})";
             return sql;
         }
-
     }
 }
