@@ -6,6 +6,7 @@ using P01.Libraries.Framework.Data;
 
 namespace P01.Libraries.Model
 {
+    //use mapping class to map to database table name
     [MappingClass("atesCompany")]
     public class Company : BaseModel
     {
