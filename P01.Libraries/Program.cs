@@ -54,7 +54,7 @@ namespace P01.Libraries
             ////  5 test modify
             BaseDAL b52 = new BaseDAL();
             Company c1 = b52.FindT<Company>(2);
-            c1.name = "dongguan2";
+            c1.name = "dongguan1";
             bool testmodify2 = b52.Update(c1);
 
             BaseDAL b5 = new BaseDAL();
